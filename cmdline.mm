@@ -308,6 +308,7 @@ int cmdline_main(int argc, const char * argv[])
                 interlaced = ((mode.derived.flags & kDisplayModeInterlacedFlag) == kDisplayModeInterlacedFlag);
                 if (displayNo > 0)
                     fprintf (stdout, "-d %d -w %d -h %d -s %.0f%s -f %d -b %d\n", displayNo, mode.derived.width, mode.derived.height, mode.derived.density, (interlaced ? " -i" : ""), mode.derived.freq, mBitres);
+                    fprintf (stdout, "-d 0x%02x -w %d -h %d -s %.0f%s -f %d -b %d\n", displays[i], mode.derived.width, mode.derived.height, mode.derived.density, (interlaced ? " -i" : ""), mode.derived.freq, mBitres);
                 else
                     fprintf (stdout, "-w %d -h %d -s %.0f%s -f %d -b %d\n", mode.derived.width, mode.derived.height, mode.derived.density, (interlaced ? " -i" : ""), mode.derived.freq, mBitres);
                 
