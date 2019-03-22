@@ -20,7 +20,7 @@ int main(int argc, const char* argv[])
                 "  --bits        (-b)  Color depth (default=current)\n"
                 "  --freq        (-f)  Frequency (default=none)\n"
                 "  --interlaced  (-i)  Interlaced flag (default=off)\n"
-                "  --display     (-d)  Select display # (default=main)\n"
+                "  --display     (-d)  Select display by # or ID (default=main)\n"
                 "  --rotation    (-r)  Rotation angle 0,90,180,270 (default=current)\n"
                 "  --displays    (-ld) List available displays\n"
                 "  --modes       (-lm) List available modes\n"
