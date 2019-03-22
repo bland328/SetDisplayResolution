@@ -12,6 +12,7 @@ int cmdline_main(int argc, const char * argv[])
         CGFloat scale = 0.0f;
         int freq;
         int bitRes = 0;
+        int displayId = -1;
         int displayNo = -1;
         int rotation = -1;
         
@@ -69,7 +70,10 @@ int cmdline_main(int argc, const char * argv[])
                         case 'd':
                             i++;
                             if (i >= argc) return -1;
-                            displayNo = atoi(argv[i]);
+							if (strncmp(argv[i], "0x", 2) == 0)
+		                        displayId = (int)strtol(argv[i], NULL, 0);
+							else
+		                        displayNo = atoi(argv[i]);
                             break;
                         case 'l':
                             if (argv[i][2]=='m')
@@ -152,7 +156,10 @@ int cmdline_main(int argc, const char * argv[])
                     {
                         i++;
                         if (i >= argc) return -1;
-                        displayNo = atoi(argv[i]);
+                        if (strncmp(argv[i], "0x", 2) == 0)
+                            displayId = (int)strtol(argv[i], NULL, 0);
+                        else
+                            displayNo = atoi(argv[i]);
                     }
                     else if (!strcmp(&argv[i][2], "displays"))
                     {
@@ -197,7 +204,21 @@ int cmdline_main(int argc, const char * argv[])
         
         
         CGDirectDisplayID display;
-        
+
+        if (displayId != -1 && displayNo == -1)
+        {
+            for (int i=0; i<nDisplays; i++)
+            {
+                if (displays[i] == displayId)
+                    displayNo=i;
+            }
+            if (displayNo == -1)
+            {
+                fprintf (stderr, "Error: display id 0x%02x unknown\n", displayId);
+                exit(1);
+            }
+        }
+
         if (displayNo > 0)
         {
             if (displayNo > nDisplays -1)
@@ -224,7 +245,7 @@ int cmdline_main(int argc, const char * argv[])
                 int mBitres = (mode.derived.depth == 4) ? 32 : 16;
                 interlaced = ((mode.derived.flags & kDisplayModeInterlacedFlag) == kDisplayModeInterlacedFlag);
                 
-                fprintf (stdout, "Display %d: { resolution = %dx%d,  scale = %.1f,  freq = %d,  bits/pixel = %d%s }\n", i, mode.derived.width, mode.derived.height, mode.derived.density, mode.derived.freq, mBitres, (interlaced ? ", interlaced" : ""));
+                fprintf (stdout, "Display %d: { id = 0x%02x,  resolution = %dx%d,  scale = %.1f,  freq = %d,  bits/pixel = %d%s }\n", i, displays[i], mode.derived.width, mode.derived.height, mode.derived.density, mode.derived.freq, mBitres, (interlaced ? ", interlaced" : ""));
                 
             }
             
